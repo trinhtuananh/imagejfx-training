@@ -72,7 +72,6 @@ public class View extends Application{
         });
         foot = new HBox();
         
-        GridPane grid = new GridPane();
         foot.getChildren().addAll(inputTask, validTask, deleteSelected);
         
         
