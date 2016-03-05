@@ -5,6 +5,7 @@
  */
 package de.knoplab;
 
+import javafx.event.EventType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -20,12 +21,14 @@ class ListCellcheckbox extends ListCell<OneTask> {
             super.updateItem(task, empty);
             if (task != null) {
                 FlowPane layout = new FlowPane();
-                CheckBox b = new CheckBox();
-                b.setSelected(task.getState());
-                System.out.println("list" + task.getState());
-                setGraphic(b);
+                CheckBox box = new CheckBox();
+                
+                box.setOnAction(e -> task.setState(!task.getState()));
+                box.setSelected(task.getState());
+
+                setGraphic(box);
                 Label l = new Label(task.getName());
-                layout.getChildren().addAll(b,l);
+                layout.getChildren().addAll(box,l);
                 
                 setGraphic(layout);
             }

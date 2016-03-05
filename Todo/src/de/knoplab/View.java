@@ -6,18 +6,15 @@
 package de.knoplab;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 /**
  *
@@ -36,39 +33,23 @@ public class View extends Application{
         myData = new Data();
         
         list = new ListView<OneTask>();
-        final ObservableList<OneTask> olist = myData.getObservableList();     
-        list.setItems(olist);
-        list.setCellFactory(new Callback<ListView<OneTask>, ListCell<OneTask>>() {
-                @Override 
-                public ListCell<OneTask> call(ListView<OneTask> list) {
-                    return new ListCellcheckbox();
-                }
-            }
-        );
+        list.setItems(myData.getObservableList());
+        list.setCellFactory((ListView<OneTask> list1) -> new ListCellcheckbox());
         
         Button allDone = new Button();
         allDone.setText("All done");
         allDone.setOnAction((ActionEvent e) -> 
         {
             myData.checkAll();
-            olist.stream().forEach(ee -> ee.setState(true));
-            list.setCellFactory(new Callback<ListView<OneTask>, ListCell<OneTask>>() {
-                @Override 
-                public ListCell<OneTask> call(ListView<OneTask> list) {
-                    return new ListCellcheckbox();
-                }
-            }
-        );
-       
-      
-            
+            list.setCellFactory((ListView<OneTask> list1) -> new ListCellcheckbox());
         });
         
         //Head
         head = new HBox();
         head.setPadding(new Insets(15, 12, 15, 12));
         head.getChildren().add(allDone);
-        
+        head.setStyle("-fx-background-color: #385f70;");
+
         
         //Foot
         inputTask = new TextField();
@@ -76,11 +57,10 @@ public class View extends Application{
         validTask = new Button("Validate Task");
         validTask.setOnAction(e -> 
         {
-            //myData.addNewTask(inputTask.getText());
-            olist.add(new OneTask((inputTask.getText()), false)); 
-
+            myData.addNewTask(inputTask.getText());
+            list.setItems(myData.getObservableList());    
+            list.setCellFactory((ListView<OneTask> list1) -> new ListCellcheckbox());
         });
-        
         foot = new HBox();
         foot.getChildren().addAll(inputTask, validTask);
         
@@ -94,6 +74,8 @@ public class View extends Application{
         
         primaryStage.setTitle("TODO");
         primaryStage.setScene(scene);
+        primaryStage.setMinHeight(500);
+        primaryStage.setMinWidth(500);
         primaryStage.show();
     }
    
