@@ -5,6 +5,7 @@
  */
 package de.knoplab;
 
+import java.awt.GridLayout;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -28,6 +30,7 @@ public class View extends Application{
     private HBox foot;
     private TextField inputTask;
     private Button validTask;
+    private Button deleteSelected;
     @Override
     public void start(Stage primaryStage) {
         myData = new Data();
@@ -61,8 +64,16 @@ public class View extends Application{
             list.setItems(myData.getObservableList());    
             list.setCellFactory((ListView<OneTask> list1) -> new ListCellcheckbox());
         });
+        deleteSelected = new Button("Delete All selected");
+        deleteSelected.setOnAction(e -> {
+            myData.deleteSelected();
+            list.setItems(myData.getObservableList());    
+            list.setCellFactory((ListView<OneTask> list1) -> new ListCellcheckbox());
+        });
         foot = new HBox();
-        foot.getChildren().addAll(inputTask, validTask);
+        
+        GridPane grid = new GridPane();
+        foot.getChildren().addAll(inputTask, validTask, deleteSelected);
         
         
         BorderPane root = new BorderPane();

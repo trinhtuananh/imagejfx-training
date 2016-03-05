@@ -62,6 +62,12 @@ private ObservableList<OneTask> items ;
         this.items.stream().forEach(e -> System.out.println(e.getName() + " "+e.getState()));
         
     }
+    
+    public void deleteSelected()
+    {
+        this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
+        
+    }
 
     
 
