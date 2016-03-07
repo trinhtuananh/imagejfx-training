@@ -15,11 +15,11 @@ import org.scijava.service.SciJavaService;
  * @author tuananh
  */
 public interface IDataTaskService extends SciJavaService{
-        public void addNewTask(String name);
+    public void addNewTask(String name);
 
-    public List<TodoTask> getMyList(); 
+    //public List<TodoTask> getMyList(); 
 
-    public void setMyList(List<TodoTask> myList) ;
+    //public void setMyList(List<TodoTask> myList) ;
     
     public List <String> getListofString();
     public ObservableList<TodoTask> getObservableList();

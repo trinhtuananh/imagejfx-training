@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.scijava.event.EventService;
+import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
 import org.scijava.service.SciJavaService;
@@ -23,7 +25,8 @@ import org.scijava.service.SciJavaService;
 @Plugin(type = SciJavaService.class, priority = 10)
 public class DataTask extends AbstractService implements IDataTaskService{
 private List<TodoTask> myList;
-
+@Parameter
+EventService eventService;
 private ObservableList<TodoTask> items ;
     public DataTask (){
         myList  = new ArrayList<>();
@@ -39,6 +42,8 @@ private ObservableList<TodoTask> items ;
     {
         TodoTask t = new TodoTask(name, false);
         myList.add(t);
+        eventService.publish(new DataAddedEvent(t));
+
         
     }
 
@@ -46,14 +51,13 @@ private ObservableList<TodoTask> items ;
         return myList;
     }
 
-    public void setMyList(List<TodoTask> myList) {
-        this.myList = myList;
-    }
-    
+
+@Override
     public List <String> getListofString(){
         List <String> result = myList.stream().map(TodoTask::getName).collect(Collectors.toList());
         return result;
     }
+@Override
     public ObservableList<TodoTask> getObservableList()
     {
             items = FXCollections.observableArrayList(this.getMyList());
@@ -61,18 +65,22 @@ private ObservableList<TodoTask> items ;
             this.items.stream().forEach(e -> System.out.println(e.getName() + " "+e.getState()));
             return items;
     }
+@Override
     public void checkAll()
     {
         this.myList.stream().forEach(e -> e.setState(true));
+        eventService.publish(new DataCheckAllEvent(myList));
         System.out.println("State of all tasks");
         this.items.stream().forEach(e -> System.out.println(e.getName() + " "+e.getState()));
         
     }
     
+@Override
     public void deleteSelected()
-    {
+    {   List <TodoTask> listToDelete = this.myList;
         this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
-        
+        listToDelete.removeAll(this.myList);
+        eventService.publish(new DataDeleteEvent(listToDelete));
     }
 
     

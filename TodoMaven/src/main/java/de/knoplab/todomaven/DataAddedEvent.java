@@ -1,0 +1,22 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package de.knoplab.todomaven;
+
+import org.scijava.event.SciJavaEvent;
+
+/**
+ *
+ * @author tuananh
+ */
+public class DataAddedEvent extends SciJavaEvent{
+    public final TodoTask data;
+    public DataAddedEvent(TodoTask task) {
+        this.data  = task;
+    }
+    public TodoTask getData() {
+        return this.data;
+    }
+}

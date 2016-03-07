@@ -7,9 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.scijava.SciJava;
+import org.scijava.event.EventHandler;
 
 
 public class MainApp extends Application {
+ @EventHandler
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -19,6 +21,7 @@ public class MainApp extends Application {
         FXMLController controller = loader.<FXMLController>getController();
         SciJava scijava = new SciJava();
         scijava.context().inject(controller);
+        controller.refreshList();
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         
