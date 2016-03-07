@@ -1,1 +1,1 @@
-{"class":"de.knoplab.todomaven.DataTask","values":{"type":"org.scijava.service.SciJavaService"}}
+{"class":"de.knoplab.todomaven.DataTask","values":{"priority":10.0,"type":"org.scijava.service.SciJavaService"}}

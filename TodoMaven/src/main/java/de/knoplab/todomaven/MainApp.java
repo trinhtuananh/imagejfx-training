@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.scijava.SciJava;
 
 
 public class MainApp extends Application {
@@ -15,7 +16,9 @@ public class MainApp extends Application {
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
         Parent root = (Parent) loader.load();
-
+        FXMLController controller = loader.<FXMLController>getController();
+        SciJava scijava = new SciJava();
+        scijava.context().inject(controller);
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         

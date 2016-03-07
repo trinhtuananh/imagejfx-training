@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.scijava.plugin.Plugin;
+import org.scijava.service.AbstractService;
+import org.scijava.service.SciJavaService;
 
 
 /**
@@ -17,7 +20,8 @@ import javafx.collections.ObservableList;
  */
 
 //I don't know which interface I should have implemented
-public class DataTask {
+@Plugin(type = SciJavaService.class, priority = 10)
+public class DataTask extends AbstractService implements IDataTaskService{
 private List<TodoTask> myList;
 
 private ObservableList<TodoTask> items ;

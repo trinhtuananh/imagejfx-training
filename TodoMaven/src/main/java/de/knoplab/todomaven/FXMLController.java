@@ -14,7 +14,7 @@ import org.scijava.plugin.Parameter;
 public class FXMLController implements Initializable {
     private Effect effectList;
     @Parameter
-    public DataTask myData;
+    public IDataTaskService myData;
  
     @FXML
     private TextField inputTask;
@@ -70,8 +70,8 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        myData = new DataTask();
-        refreshList();
+        //myData = new DataTask();
+        //refreshList();
         effectList = list.getEffect();
         
     }  
