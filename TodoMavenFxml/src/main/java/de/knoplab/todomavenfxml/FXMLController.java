@@ -2,24 +2,21 @@ package de.knoplab.todomavenfxml;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.GaussianBlur;
+import org.scijava.plugin.Parameter;
 
 public class FXMLController implements Initializable {
     private Effect effectList;
-    private DataTask myData;
-    @FXML
-    private Label label;
+    @Parameter
+    public IDataTaskService myData;
+ 
     @FXML
     private TextField inputTask;
     @FXML
@@ -41,6 +38,7 @@ public class FXMLController implements Initializable {
     
     @FXML
     private void validTask(){
+        refreshList();
         myData.addNewTask(inputTask.getText());
         inputTask.setText("");
         inputTask.setPromptText("Add an other Task");
@@ -65,16 +63,22 @@ public class FXMLController implements Initializable {
         refreshList();
     }
     
-    private void refreshList(){
+    public void refreshList(){
         list.setItems(myData.getObservableList());    
         list.setCellFactory((ListView<TodoTask> list1) -> new ListCellcheckbox());
     }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        myData = new DataTask();
-        refreshList();
+        
+        //myData = new DataTask();
+        //refreshList();
         effectList = list.getEffect();
         
-    }    
+    }  
+    
+    public void contructmp()
+    {
+        effectList = list.getEffect();
+    }
 }
