@@ -14,7 +14,7 @@ import org.scijava.service.SciJavaService;
  *
  * @author tuananh
  */
-public interface IDataTaskService extends SciJavaService {
+public interface DataTaskService extends SciJavaService {
 
     public void addNewTask(String name);
 

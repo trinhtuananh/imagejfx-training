@@ -25,13 +25,13 @@ import org.scijava.service.SciJavaService;
  */
 //I don't know which interface I should have implemented
 @Plugin(type = SciJavaService.class, priority = 10)
-public final class DataTask extends AbstractService implements IDataTaskService {
+public final class DefaultDataTask extends AbstractService implements DataTaskService {
 
     private List<TodoTask> myList;
     @Parameter
     EventService eventService;
 
-    public DataTask() throws Exception {
+    public DefaultDataTask() throws Exception {
         myList = new ArrayList<>();
         TodoTask t = new TodoTask(("Data 1"), true);
         myList.add(t);

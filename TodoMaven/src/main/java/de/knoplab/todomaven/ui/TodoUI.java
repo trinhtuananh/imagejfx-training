@@ -1,7 +1,6 @@
 package de.knoplab.todomaven.ui;
 
 import de.knoplab.todomaven.task.TodoTask;
-import de.knoplab.todomaven.task.IDataTaskService;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -28,6 +27,10 @@ import org.scijava.event.DefaultEventService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.plugin.Parameter;
+import de.knoplab.todomaven.task.DataTaskService;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.ComboBoxListCell;
 
 public class TodoUI extends AnchorPane {
 
@@ -35,21 +38,21 @@ public class TodoUI extends AnchorPane {
     private ObservableList<TodoTask> obsList;
 
     @Parameter
-    public IDataTaskService myData;
+    public DataTaskService myData;
     @Parameter
     public EventService eventService;
     @FXML
     private TextField inputTask;
     @FXML
-    private Button valid;
+    private Button validButton;
     @FXML
-    private Button selectAll;
+    private Button selectAllButton;
     @FXML
-    private Button delete;
+    private Button deleteButton;
     @FXML
     private ListView<TodoTask> list;
     @FXML
-    private Button confidentiel;
+    private Button confidentielButton;
 
     @FXML
     private void selectAll() {
@@ -91,7 +94,8 @@ public class TodoUI extends AnchorPane {
 
         Platform.runLater(() -> {
             list.getItems().add(event.getData());
-            list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
+            //list.setCellFactory((ListView<TodoTask> l)-> new ListCellcheckbox());
+
         }
         );
     }
@@ -100,13 +104,16 @@ public class TodoUI extends AnchorPane {
     public void onDataDeleteEvent(DataDeleteEvent event) {
         Platform.runLater(() -> {
             list.getItems().removeAll(event.getData());
-            list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
         });
     }
 
     @EventHandler
     public void onDataCheckAllEvent(DataCheckAllEvent event) {
-        list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
+        Platform.runLater(() -> {
+            list.getItems().setAll(event.getData());
+            list.setCellFactory((this.list.getCellFactory()));
+        });
+
     }
 
 }
