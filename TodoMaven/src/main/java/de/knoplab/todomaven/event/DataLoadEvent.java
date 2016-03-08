@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.knoplab.todomaven;
+package de.knoplab.todomaven.event;
 
+import de.knoplab.todomaven.task.TodoTask;
 import java.util.List;
 import org.scijava.event.SciJavaEvent;
 
@@ -12,14 +13,10 @@ import org.scijava.event.SciJavaEvent;
  *
  * @author tuananh
  */
-public class DataCheckAllEvent extends SciJavaEvent {
+public class DataLoadEvent extends SciJavaEvent {
 
-    public final List <TodoTask> data;
-    public DataCheckAllEvent(List<TodoTask> task) {
-        this.data  = task;
+    public DataLoadEvent() {
+        System.out.println("Creation DataLoadEvent");
     }
-    public List<TodoTask> getData() {
-        return this.data;
-    
-} 
+
 }

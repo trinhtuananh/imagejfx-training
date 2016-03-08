@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.knoplab.todomaven;
+package de.knoplab.todomaven.event;
 
+import de.knoplab.todomaven.task.TodoTask;
 import org.scijava.event.SciJavaEvent;
 
 /**

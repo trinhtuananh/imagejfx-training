@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.knoplab.todomaven;
+package de.knoplab.todomaven.task;
 
 import java.util.List;
 
@@ -14,16 +14,11 @@ import org.scijava.service.SciJavaService;
  *
  * @author tuananh
  */
-public interface IDataTaskService extends SciJavaService{
+public interface IDataTaskService extends SciJavaService {
+
     public void addNewTask(String name);
 
-    //public List<TodoTask> getMyList(); 
-
-    //public void setMyList(List<TodoTask> myList) ;
-    
-    public List <String> getListofString();
-    public ObservableList<TodoTask> getObservableList();
     public void checkAll();
-    
+
     public void deleteSelected();
 }

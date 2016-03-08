@@ -7,8 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.knoplab.todomaven.FXMLController">
-    <children>
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"> 
         <Button fx:id="valid" layoutX="292.0" layoutY="77.0" onAction="#validTask" text="Validate task" />
         <Button fx:id="selectAll" layoutX="329.0" layoutY="341.0" onAction="#selectAll" text="Select All" />
         <Button fx:id="confidentiel" layoutX="30.0" layoutY="344.0" onAction="#confidentiel" text="Confidentiel" />
@@ -16,6 +15,6 @@
         <Button fx:id="delete" layoutX="169.0" layoutY="343.0" onAction="#deleteSelected" text="Delete selected" />
         <ListView fx:id="list" layoutX="86.0" layoutY="115.0" prefHeight="200.0" prefWidth="314.0">
         </ListView>
-        <TextField fx:id="inputTask" layoutX="88.0" layoutY="79.0" promptText="Enter Task"  />
-    </children>
-</AnchorPane>
+        <TextField fx:id="inputTask" layoutX="88.0" layoutY="79.0" promptText="Enter Task" />
+   
+</fx:root>

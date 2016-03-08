@@ -1,5 +1,6 @@
 package de.knoplab.todomaven;
 
+import de.knoplab.todomaven.ui.TodoUI;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -8,28 +9,29 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.scijava.SciJava;
 import org.scijava.event.EventHandler;
-
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 
 public class MainApp extends Application {
- @EventHandler
+
+    @EventHandler
 
     @Override
     public void start(Stage stage) throws Exception {
-        
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
-        Parent root = (Parent) loader.load();
-        FXMLController controller = loader.<FXMLController>getController();
+
+        TodoUI ui = new TodoUI();
         SciJava scijava = new SciJava();
-        scijava.context().inject(controller);
-        controller.refreshList();
-        Scene scene = new Scene(root);
+        scijava.context().inject(ui);
+        Scene scene = new Scene(ui);
         scene.getStylesheets().add("/styles/Styles.css");
-        
         stage.setTitle("Todo");
         stage.setScene(scene);
         stage.show();
-
-            
 
     }
 
