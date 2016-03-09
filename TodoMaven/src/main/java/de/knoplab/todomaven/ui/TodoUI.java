@@ -1,7 +1,7 @@
 package de.knoplab.todomaven.ui;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.knoplab.todomaven.task.DefaultTodoTask;
+import de.knoplab.todomaven.task.TodoTask;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -29,7 +29,7 @@ import org.scijava.InstantiableException;
 import org.scijava.plugin.PluginInfo;
 import org.scijava.plugin.PluginService;
 import de.knoplab.todomaven.plugins.TodoPlugin;
-import de.knoplab.todomaven.task.TodoTask;
+import de.knoplab.todomaven.task.DefaultTodoTask;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
@@ -37,7 +37,7 @@ import javafx.scene.layout.GridPane;
 public class TodoUI extends AnchorPane {
 
     private Effect effectList;
-    private ObservableList<DefaultTodoTask> obsList;
+    private ObservableList<TodoTask> obsList;
     
 
 
@@ -57,7 +57,7 @@ public class TodoUI extends AnchorPane {
     @FXML
     private Button deleteButton;
     @FXML
-    private ListView<ViewModel> list;
+    private ListView<TodoTask> list;
     @FXML
     private Button confidentielButton;
     @FXML
@@ -70,8 +70,7 @@ public class TodoUI extends AnchorPane {
 
     @FXML
     private void validTask() {
-        TodoTask t = new DefaultTodoTask(inputTask.getText(), true);
-        myData.addNewTask(new ViewModel(t));
+        myData.addNewTask(new DefaultTodoTask(inputTask.getText(), false));
         inputTask.setText("");
         inputTask.setPromptText("Add an other Task");
     }
@@ -98,7 +97,7 @@ public class TodoUI extends AnchorPane {
         context.inject(this);
         pluginService.getPluginsOfType(TodoPlugin.class).forEach(this::addPlugin);
         List<PluginInfo<TodoPlugin>> lll = pluginService.getPluginsOfType(TodoPlugin.class);
-        list.setCellFactory((ListView<ViewModel> l) -> new ListCellcheckbox());
+        list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
         Platform.runLater(() -> eventService.publish(new DataLoadEvent()));
     }
 
@@ -128,7 +127,11 @@ public class TodoUI extends AnchorPane {
     }
 
     public void applyPlugin(TodoPlugin p)  {
-        p.execute();
+        try {
+            p.execute();
+        } catch (IOException ex) {
+            Logger.getLogger(TodoUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

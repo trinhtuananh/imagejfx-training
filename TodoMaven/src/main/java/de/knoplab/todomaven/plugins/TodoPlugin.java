@@ -12,5 +12,5 @@ import org.scijava.plugin.SciJavaPlugin;
  * @author tuananh
  */
 public interface TodoPlugin extends SciJavaPlugin{
-    public void execute ();
+    public void execute () throws IOException;
 }

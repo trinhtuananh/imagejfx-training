@@ -17,15 +17,13 @@ import javafx.scene.layout.FlowPane;
  *
  * @author tuananh
  */
-class ListCellcheckbox extends ListCell<ViewModel> {
+class ListCellcheckbox extends ListCell<TodoTask> {
         @Override
-        public void updateItem(ViewModel task, boolean empty) {
+        public void updateItem(TodoTask task, boolean empty) {
             super.updateItem(task, empty);
             if (task != null) {
                 CheckBox box = new CheckBox(task.getName());
-                task.doneProperty();
-                box.selectedProperty().bindBidirectional(task.doneProperty());
-                //box.selectedProperty().bindBidirectional(task.textProperty());
+                
                 box.setOnAction(e -> task.setState(!task.getState()));
                 box.setSelected(task.getState());
 

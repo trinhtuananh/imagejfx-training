@@ -8,7 +8,7 @@ package de.knoplab.todomaven.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import de.knoplab.todomaven.ui.ViewModel;
+
 import org.scijava.service.SciJavaService;
 
 /**
@@ -23,9 +23,10 @@ import org.scijava.service.SciJavaService;
     @Type(value = DefaultDataTask.class, name = "DefaultDataTask") })*/
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonDeserialize(as = DefaultDataTask.class)
+
 public interface DataTaskService extends SciJavaService {
 
-    public void addNewTask(ViewModel t);
+    public void addNewTask(TodoTask t);
 
     public void checkAll();
 

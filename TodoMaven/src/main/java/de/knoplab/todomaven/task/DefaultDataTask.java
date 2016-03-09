@@ -6,8 +6,6 @@
 package de.knoplab.todomaven.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -28,9 +26,11 @@ import org.scijava.service.AbstractService;
  *
  * @author tuananh
  */
+
 @Plugin(type = DataTaskService.class, priority = 10)
 public final class DefaultDataTask extends AbstractService implements DataTaskService {
-    private List<ViewModel> myList;
+
+    private List<TodoTask> myList;
     @Parameter
     @JsonIgnore
     public EventService eventService = new DefaultEventService();
@@ -38,20 +38,19 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
     public Context context ;
     public DefaultDataTask() throws Exception {
         myList = new ArrayList<>();
-        TodoTask task = new DefaultTodoTask("e", true);
-        ViewModel t = new ViewModel(task);
-        myList.add(t);
+        TodoTask task = new DefaultTodoTask("Example 1", false);
+        myList.add(task);
 
     }
 
     @Override
-    public void addNewTask(ViewModel t) {
+    public void addNewTask(TodoTask t) {
         
         myList.add(t);
         eventService.publish(new DataAddedEvent(t));
     }
 
-    public List<ViewModel> getMyList() {
+    public List<TodoTask> getMyList() {
         return myList;
     }
 
@@ -65,7 +64,7 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
 
     @Override
     public void deleteSelected() {
-        List<ViewModel> listToDelete = this.myList;
+        List<TodoTask> listToDelete = this.myList;
         this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
         listToDelete.removeAll(this.myList);
         eventService.publish(new DataDeleteEvent(listToDelete));

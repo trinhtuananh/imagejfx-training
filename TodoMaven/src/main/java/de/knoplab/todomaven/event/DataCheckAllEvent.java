@@ -6,6 +6,7 @@
 package de.knoplab.todomaven.event;
 
 import de.knoplab.todomaven.task.DefaultTodoTask;
+import de.knoplab.todomaven.task.TodoTask;
 import de.knoplab.todomaven.ui.ViewModel;
 import java.util.List;
 import org.scijava.event.SciJavaEvent;
@@ -16,13 +17,13 @@ import org.scijava.event.SciJavaEvent;
  */
 public class DataCheckAllEvent extends SciJavaEvent {
 
-    public final List<ViewModel> data;
+    public final List<TodoTask> data;
 
-    public DataCheckAllEvent(List<ViewModel> task) {
+    public DataCheckAllEvent(List<TodoTask> task) {
         this.data = task;
     }
 
-    public List<ViewModel> getData() {
+    public List<TodoTask> getData() {
         return this.data;
 
     }

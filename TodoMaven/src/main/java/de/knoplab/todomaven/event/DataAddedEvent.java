@@ -15,11 +15,11 @@ import org.scijava.event.SciJavaEvent;
  * @author tuananh
  */
 public class DataAddedEvent extends SciJavaEvent{
-    public final ViewModel data;
-    public DataAddedEvent(ViewModel task) {
+    public final TodoTask data;
+    public DataAddedEvent(TodoTask task) {
         this.data  = task;
     }
-    public ViewModel getData() {
+    public TodoTask getData() {
         return this.data;
     }
 }
