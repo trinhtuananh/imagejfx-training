@@ -5,9 +5,7 @@
  */
 package de.knoplab.todomaven.task;
 
-import java.util.List;
 
-import javafx.collections.ObservableList;
 import org.scijava.service.SciJavaService;
 
 /**

@@ -16,5 +16,8 @@
         <ListView fx:id="list" layoutX="86.0" layoutY="115.0" prefHeight="200.0" prefWidth="314.0">
         </ListView>
         <TextField fx:id="inputTask" layoutX="88.0" layoutY="79.0" promptText="Enter Task" />
+   <children>
+      <Button fx:id="saveButton" layoutX="19.0" layoutY="32.0" onAction="#applySavePlugin"  text="Save" />
+   </children>
    
 </fx:root>

@@ -5,6 +5,8 @@
  */
 package de.knoplab.todomaven.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -12,25 +14,28 @@ import de.knoplab.todomaven.event.DataLoadEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.scijava.Context;
+import org.scijava.event.DefaultEventService;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 import org.scijava.service.AbstractService;
-import org.scijava.service.SciJavaService;
 
 /**
  *
  * @author tuananh
  */
-//I don't know which interface I should have implemented
-@Plugin(type = SciJavaService.class, priority = 10)
+
+@Plugin(type = DataTaskService.class, priority = 10)
 public final class DefaultDataTask extends AbstractService implements DataTaskService {
 
     private List<TodoTask> myList;
     @Parameter
-    EventService eventService;
-
+    @JsonIgnore
+    public EventService eventService = new DefaultEventService();
+    @JsonIgnore
+    public Context context ;
     public DefaultDataTask() throws Exception {
         myList = new ArrayList<>();
         TodoTask t = new TodoTask(("Data 1"), true);
@@ -40,6 +45,7 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
 
     @Override
     public void addNewTask(String name) {
+        
         TodoTask t = new TodoTask(name, false);
         myList.add(t);
         eventService.publish(new DataAddedEvent(t));
