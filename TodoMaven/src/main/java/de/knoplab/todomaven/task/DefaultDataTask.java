@@ -6,7 +6,6 @@
 package de.knoplab.todomaven.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -26,10 +25,8 @@ import org.scijava.service.AbstractService;
  *
  * @author tuananh
  */
-
 @Plugin(type = DataTaskService.class, priority = 10)
 public final class DefaultDataTask extends AbstractService implements DataTaskService {
-
     private List<TodoTask> myList;
     @Parameter
     @JsonIgnore

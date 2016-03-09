@@ -29,13 +29,16 @@ import org.scijava.InstantiableException;
 import org.scijava.plugin.PluginInfo;
 import org.scijava.plugin.PluginService;
 import de.knoplab.todomaven.plugins.TodoPlugin;
+import java.util.List;
+import javafx.event.ActionEvent;
+import javafx.scene.layout.GridPane;
 
 public class TodoUI extends AnchorPane {
 
     private Effect effectList;
     private ObservableList<TodoTask> obsList;
-    @Parameter
-    private TodoPlugin savePlugin;
+    
+
 
     @Parameter
     public DataTaskService myData;
@@ -58,7 +61,7 @@ public class TodoUI extends AnchorPane {
     private Button confidentielButton;
     @FXML
     private Button saveButton;
-
+    private double x=0;
     @FXML
     private void selectAll() {
         myData.checkAll();
@@ -92,26 +95,38 @@ public class TodoUI extends AnchorPane {
         loader.load();
         context.inject(this);
         pluginService.getPluginsOfType(TodoPlugin.class).forEach(this::addPlugin);
-        
+        List<PluginInfo<TodoPlugin>> lll = pluginService.getPluginsOfType(TodoPlugin.class);
         list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
         Platform.runLater(() -> eventService.publish(new DataLoadEvent()));
     }
 
-    public void addPlugin(PluginInfo<TodoPlugin> savePluginInfo) {
+    public void addPlugin(PluginInfo<TodoPlugin> todoPluginInfo) {
+        x= x+100;
+        Button button = new Button(todoPluginInfo.getLabel());
+        System.out.println("creation d'un plugin "+ button.getText());
+       
+        button.setOnAction((ActionEvent e) -> {
+            applyPlugin(() -> {
+                try {
+                    TodoPlugin plugin2 =todoPluginInfo.createInstance();
+                    this.pluginService.context().inject(plugin2);
+                    plugin2.execute();
 
-        saveButton.setText(savePluginInfo.getLabel());
-        try {
-            this.savePlugin = savePluginInfo.createInstance();
-            this.pluginService.context().inject(this.savePlugin);
-
-        } catch (InstantiableException ex) {
-            Logger.getLogger(TodoUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                } catch (InstantiableException ex) {
+                    Logger.getLogger(TodoUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        });
+        button.setLayoutX(x);
+        button.setLayoutY(10);
+        this.getChildren().add(button);
+        
+        
 
     }
 
-    public void applySavePlugin() throws IOException {
-        this.savePlugin.execute();
+    public void applyPlugin(TodoPlugin p)  {
+        p.execute();
 
     }
 
