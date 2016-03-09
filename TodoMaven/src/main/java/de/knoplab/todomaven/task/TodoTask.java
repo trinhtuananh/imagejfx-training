@@ -9,30 +9,12 @@ package de.knoplab.todomaven.task;
  *
  * @author tuananh
  */
-public class TodoTask {
-    private String name;
-    private boolean state;
+public interface TodoTask {
+    public String getName();
 
-    public TodoTask(String n, boolean s)
-    {
-        this.name = n;
-        this.state = s;
-    }
-    public String getName() {
-        return name;
-    }
+    public void setName(String name) ;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public boolean getState();
 
-    public boolean getState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
-    }
-    
-    
+    public void setState(boolean state);
 }

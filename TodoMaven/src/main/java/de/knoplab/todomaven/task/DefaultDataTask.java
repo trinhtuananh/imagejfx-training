@@ -6,10 +6,13 @@
 package de.knoplab.todomaven.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
 import de.knoplab.todomaven.event.DataLoadEvent;
+import de.knoplab.todomaven.ui.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +30,7 @@ import org.scijava.service.AbstractService;
  */
 @Plugin(type = DataTaskService.class, priority = 10)
 public final class DefaultDataTask extends AbstractService implements DataTaskService {
-    private List<TodoTask> myList;
+    private List<ViewModel> myList;
     @Parameter
     @JsonIgnore
     public EventService eventService = new DefaultEventService();
@@ -35,20 +38,20 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
     public Context context ;
     public DefaultDataTask() throws Exception {
         myList = new ArrayList<>();
-        TodoTask t = new TodoTask(("Data 1"), true);
+        TodoTask task = new DefaultTodoTask("e", true);
+        ViewModel t = new ViewModel(task);
         myList.add(t);
 
     }
 
     @Override
-    public void addNewTask(String name) {
+    public void addNewTask(ViewModel t) {
         
-        TodoTask t = new TodoTask(name, false);
         myList.add(t);
         eventService.publish(new DataAddedEvent(t));
     }
 
-    public List<TodoTask> getMyList() {
+    public List<ViewModel> getMyList() {
         return myList;
     }
 
@@ -62,7 +65,7 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
 
     @Override
     public void deleteSelected() {
-        List<TodoTask> listToDelete = this.myList;
+        List<ViewModel> listToDelete = this.myList;
         this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
         listToDelete.removeAll(this.myList);
         eventService.publish(new DataDeleteEvent(listToDelete));
@@ -72,5 +75,6 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
     public void loadUI(DataLoadEvent event) {
         this.myList.stream().forEach(e -> this.eventService.publish(new DataAddedEvent(e)));
     }
+
 
 }

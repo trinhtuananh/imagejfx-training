@@ -6,11 +6,9 @@
 package de.knoplab.todomaven.task;
 
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import de.knoplab.todomaven.ui.ViewModel;
 import org.scijava.service.SciJavaService;
 
 /**
@@ -23,10 +21,11 @@ import org.scijava.service.SciJavaService;
     property = "type")
 @JsonSubTypes({
     @Type(value = DefaultDataTask.class, name = "DefaultDataTask") })*/
+@JsonIgnoreProperties(ignoreUnknown=true)
 @JsonDeserialize(as = DefaultDataTask.class)
 public interface DataTaskService extends SciJavaService {
 
-    public void addNewTask(String name);
+    public void addNewTask(ViewModel t);
 
     public void checkAll();
 

@@ -5,6 +5,7 @@
  */
 package de.knoplab.todomaven.ui;
 
+import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
 import javafx.event.EventType;
 import javafx.scene.control.CheckBox;
@@ -16,13 +17,15 @@ import javafx.scene.layout.FlowPane;
  *
  * @author tuananh
  */
-class ListCellcheckbox extends ListCell<TodoTask> {
+class ListCellcheckbox extends ListCell<ViewModel> {
         @Override
-        public void updateItem(TodoTask task, boolean empty) {
+        public void updateItem(ViewModel task, boolean empty) {
             super.updateItem(task, empty);
             if (task != null) {
                 CheckBox box = new CheckBox(task.getName());
-                
+                task.doneProperty();
+                box.selectedProperty().bindBidirectional(task.doneProperty());
+                //box.selectedProperty().bindBidirectional(task.textProperty());
                 box.setOnAction(e -> task.setState(!task.getState()));
                 box.setSelected(task.getState());
 

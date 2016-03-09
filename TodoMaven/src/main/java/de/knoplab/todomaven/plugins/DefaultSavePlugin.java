@@ -31,7 +31,6 @@ public class DefaultSavePlugin implements TodoPlugin {
     public void execute() {
             
         try {
-            this.tasks.getContext().inject(this);
             System.out.println("t");
             mapper = new ObjectMapper();
 

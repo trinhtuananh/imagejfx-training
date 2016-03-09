@@ -5,7 +5,9 @@
  */
 package de.knoplab.todomaven.event;
 
+import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
+import de.knoplab.todomaven.ui.ViewModel;
 import org.scijava.event.SciJavaEvent;
 
 /**
@@ -13,11 +15,11 @@ import org.scijava.event.SciJavaEvent;
  * @author tuananh
  */
 public class DataAddedEvent extends SciJavaEvent{
-    public final TodoTask data;
-    public DataAddedEvent(TodoTask task) {
+    public final ViewModel data;
+    public DataAddedEvent(ViewModel task) {
         this.data  = task;
     }
-    public TodoTask getData() {
+    public ViewModel getData() {
         return this.data;
     }
 }

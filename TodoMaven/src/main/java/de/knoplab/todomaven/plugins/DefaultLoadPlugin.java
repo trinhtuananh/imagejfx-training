@@ -29,7 +29,7 @@ public class DefaultLoadPlugin implements TodoPlugin {
     public void execute() {
         mapper = new ObjectMapper();
         try {
-             DataTaskService t = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), DataTaskService.class);
+             tasks = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), DataTaskService.class);
         } catch (IOException ex) {
             Logger.getLogger(DefaultLoadPlugin.class.getName()).log(Level.SEVERE, null, ex);
         }
