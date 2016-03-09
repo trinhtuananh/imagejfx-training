@@ -75,5 +75,16 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
         this.myList.stream().forEach(e -> this.eventService.publish(new DataAddedEvent(e)));
     }
 
+    @Override
+    public List<TodoTask> getList() {
+        return this.myList;
+    }
+
+    @Override
+    public void setList(List<TodoTask> l) {
+        //this.myList = l;
+        l.stream().forEach(e -> addNewTask(e));
+    }
+
 
 }

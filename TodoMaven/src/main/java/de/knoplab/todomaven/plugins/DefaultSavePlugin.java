@@ -31,10 +31,10 @@ public class DefaultSavePlugin  implements TodoPlugin {
         mapper = new ObjectMapper();
 
 //Object to JSON in file
-        mapper.writeValue(new File("./src/main/resources/json/saveTasks.json"), tasks);
+        mapper.writeValue(new File("./src/main/resources/json/saveTasks.json"), tasks.getList());
 
 //Object to JSON in String
-        String jsonInString = mapper.writeValueAsString(tasks);
+        String jsonInString = mapper.writeValueAsString(tasks.getList());
         System.out.println(jsonInString);
     }
 

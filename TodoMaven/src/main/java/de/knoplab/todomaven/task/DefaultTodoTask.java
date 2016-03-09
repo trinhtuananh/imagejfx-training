@@ -12,7 +12,10 @@ package de.knoplab.todomaven.task;
 public class DefaultTodoTask implements TodoTask {
     private String name;
     private boolean state;
-
+    public DefaultTodoTask()
+    {
+        
+    }
     public DefaultTodoTask(String n, boolean s)
     {
         this.name = n;
