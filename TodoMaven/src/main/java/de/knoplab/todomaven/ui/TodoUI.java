@@ -30,6 +30,7 @@ import org.scijava.plugin.PluginInfo;
 import org.scijava.plugin.PluginService;
 import de.knoplab.todomaven.plugins.TodoPlugin;
 import de.knoplab.todomaven.task.DefaultTodoTask;
+import de.knoplab.todomaven.task.TodoTask;
 import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
@@ -144,10 +145,14 @@ public class TodoUI extends AnchorPane {
     @EventHandler
     public void onDataDeleteEvent(DataDeleteEvent event) {
         Platform.runLater(() -> {
-            list.getItems().removeAll(event.getData());
+            System.out.println("size list"+list.getItems().size());
+            list.getItems().remove(getWrapperFromTask(event.getData()));
         });
     }
-
+    private TodoTaskWrapper getWrapperFromTask(TodoTask task) {
+        
+        return list.getItems().stream().filter(wrapper -> wrapper.getTask() == task).findFirst().orElse(null);
+    }
     /*@EventHandler
     public void onDataCheckAllEvent(DataCheckAllEvent event) {
         Platform.runLater(() -> {

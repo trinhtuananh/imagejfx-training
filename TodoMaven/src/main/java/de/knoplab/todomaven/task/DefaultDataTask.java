@@ -66,7 +66,11 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
         List<TodoTask> listToDelete = this.myList;
         this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
         listToDelete.removeAll(this.myList);
-        eventService.publish(new DataDeleteEvent(listToDelete));
+        listToDelete.forEach(e -> {
+            myList.remove(e);
+            eventService.publish(new DataDeleteEvent(e));
+            
+                });
     }
 
     @EventHandler

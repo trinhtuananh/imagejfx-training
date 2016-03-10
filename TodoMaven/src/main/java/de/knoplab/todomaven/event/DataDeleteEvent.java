@@ -5,7 +5,6 @@
  */
 package de.knoplab.todomaven.event;
 
-import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
 import java.util.List;
 import org.scijava.event.SciJavaEvent;
@@ -16,13 +15,13 @@ import org.scijava.event.SciJavaEvent;
  */
 public class DataDeleteEvent extends SciJavaEvent {
 
-    public final List<TodoTask> data;
+    public TodoTask data;
 
-    public DataDeleteEvent(List<TodoTask> tasks) {
+    public DataDeleteEvent(TodoTask tasks) {
         this.data = tasks;
     }
 
-    public List<TodoTask> getData() {
+    public TodoTask getData() {
         return this.data;
     }
 }

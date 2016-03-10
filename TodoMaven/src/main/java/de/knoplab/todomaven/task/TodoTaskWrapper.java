@@ -33,6 +33,9 @@ public class TodoTaskWrapper implements TodoTask{
         }
 
     }
+    public TodoTask getTask(){
+        return this.task;
+    }
     @Override
     public String getName() {
         return task.getName();
