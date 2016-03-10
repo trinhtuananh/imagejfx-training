@@ -56,6 +56,7 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
 
                 // it allows the checkbox to react to any change of wrapper and vis versa
                 checkbox.selectedProperty().bindBidirectional(newValue.stateProperty());
+                System.out.println(newValue.stateProperty());
                 setGraphic(box);
 
             }

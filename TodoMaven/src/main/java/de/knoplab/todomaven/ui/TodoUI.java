@@ -32,6 +32,7 @@ import de.knoplab.todomaven.plugins.TodoPlugin;
 import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
 import java.util.List;
+import javafx.collections.ObservableListBase;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.GridPane;
 
@@ -154,5 +155,12 @@ public class TodoUI extends AnchorPane {
         return list.getItems().stream().filter(wrapper -> wrapper.getTask() == task).findFirst().orElse(null);
     }
 
+ @EventHandler
+    public void onDataCheckAllEvent(DataCheckAllEvent event) {
+        Platform.runLater(() -> {
+            list.getItems().forEach(e -> e.setState(true));
+            list.setCellFactory((this.list.getCellFactory()));
+        });
 
+    }
 }

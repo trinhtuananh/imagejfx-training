@@ -1,9 +1,10 @@
+package de.knoplab.todomaven.task;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.knoplab.todomaven.task;
 
 import javafx.beans.property.Property;
 import javafx.beans.property.adapter.JavaBeanObjectPropertyBuilder;
@@ -11,10 +12,12 @@ import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 
 /**
  *
- * @author tuananh
+ * @author cyril
  */
-public class TodoTaskWrapper implements TodoTask{
-    private TodoTask task;
+public class TodoTaskWrapper implements TodoTask {
+
+    private final TodoTask task;
+
     private Property<String> nameProperty;
     private Property<Boolean> stateProperty;
 
@@ -33,18 +36,10 @@ public class TodoTaskWrapper implements TodoTask{
         }
 
     }
-    public TodoTask getTask(){
-        return this.task;
-    }
+
     @Override
     public String getName() {
         return task.getName();
-    }
-
-    @Override
-    public void setName(String name) {
-
-        this.nameProperty.setValue(name);
     }
 
     @Override
@@ -53,15 +48,32 @@ public class TodoTaskWrapper implements TodoTask{
     }
 
     @Override
-    public void setState(boolean state) {
-        System.out.println("wrapper "+state);
-        this.stateProperty.setValue(state);
+    public void setState(boolean isDone) {
+        // When setting the property, it will non only 
+        // change the wrapped task, but it will
+        // also automatically notify all the listeners
+        // of the "state" property.
+        stateProperty.setValue(isDone);
+        System.out.println("from wrapper "+stateProperty);
     }
+
+    @Override
+    public void setName(String name) {
+        // same as before
+        nameProperty.setValue(name);
+    }
+
+    public TodoTask getTask() {
+        return task;
+    }
+
     public Property<String> nameProperty() {
         return nameProperty;
     }
 
     public Property<Boolean> stateProperty() {
         return stateProperty;
-    }    
+    }
+
+
 }
