@@ -17,11 +17,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.scijava.plugin.Parameter;
+import org.scijava.plugin.Plugin;
 
 /**
  *
  * @author tuananh
  */
+@Plugin(type = TodoPlugin.class, label = "Load Tasks", priority = 10)
+
 public class DefaultLoadPlugin implements TodoPlugin{
     private ObjectMapper mapper;
     @Parameter

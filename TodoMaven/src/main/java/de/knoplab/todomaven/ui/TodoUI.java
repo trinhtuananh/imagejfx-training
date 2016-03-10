@@ -1,7 +1,7 @@
 package de.knoplab.todomaven.ui;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.knoplab.todomaven.task.TodoTask;
+import de.knoplab.todomaven.task.TodoTaskWrapper;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
@@ -37,7 +37,7 @@ import javafx.scene.layout.GridPane;
 public class TodoUI extends AnchorPane {
 
     private Effect effectList;
-    private ObservableList<TodoTask> obsList;
+    private ObservableList<TodoTaskWrapper> obsList;
     
 
 
@@ -57,7 +57,7 @@ public class TodoUI extends AnchorPane {
     @FXML
     private Button deleteButton;
     @FXML
-    private ListView<TodoTask> list;
+    private ListView<TodoTaskWrapper> list;
     @FXML
     private Button confidentielButton;
     @FXML
@@ -70,7 +70,7 @@ public class TodoUI extends AnchorPane {
 
     @FXML
     private void validTask() {
-        myData.addNewTask(new DefaultTodoTask(inputTask.getText(), false));
+        myData.addNewTask(new TodoTaskWrapper(new DefaultTodoTask(inputTask.getText(), false)));
         inputTask.setText("");
         inputTask.setPromptText("Add an other Task");
     }
@@ -96,8 +96,7 @@ public class TodoUI extends AnchorPane {
         loader.load();
         context.inject(this);
         pluginService.getPluginsOfType(TodoPlugin.class).forEach(this::addPlugin);
-        List<PluginInfo<TodoPlugin>> lll = pluginService.getPluginsOfType(TodoPlugin.class);
-        list.setCellFactory((ListView<TodoTask> l) -> new ListCellcheckbox());
+        list.setCellFactory((ListView<TodoTaskWrapper> l) -> new ListCellcheckbox());
         Platform.runLater(() -> eventService.publish(new DataLoadEvent()));
     }
 
@@ -137,12 +136,9 @@ public class TodoUI extends AnchorPane {
 
     @EventHandler
     public void onDataEventAdded(DataAddedEvent event) {
-
-        Platform.runLater(() -> {
-            list.getItems().add(event.getData());
-
-        }
-        );
+            Platform.runLater(()->{
+                list.getItems().add(new TodoTaskWrapper(event.getData()));
+            });
     }
 
     @EventHandler
@@ -152,13 +148,13 @@ public class TodoUI extends AnchorPane {
         });
     }
 
-    @EventHandler
+    /*@EventHandler
     public void onDataCheckAllEvent(DataCheckAllEvent event) {
         Platform.runLater(() -> {
             list.getItems().setAll(event.getData());
             list.setCellFactory((this.list.getCellFactory()));
         });
 
-    }
+    }*/
 
 }

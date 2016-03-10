@@ -21,19 +21,24 @@ public class DefaultTodoTask implements TodoTask {
         this.name = n;
         this.state = s;
     }
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public boolean getState() {
         return state;
     }
 
+    @Override
     public void setState(boolean state) {
+        System.err.println(this.state+"Change state "+state );
         this.state = state;
     }
     

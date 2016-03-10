@@ -7,7 +7,6 @@ package de.knoplab.todomaven.event;
 
 import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
-import de.knoplab.todomaven.ui.ViewModel;
 import java.util.List;
 import org.scijava.event.SciJavaEvent;
 

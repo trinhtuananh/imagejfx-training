@@ -10,7 +10,6 @@ import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
 import de.knoplab.todomaven.event.DataAddedEvent;
 import de.knoplab.todomaven.event.DataLoadEvent;
-import de.knoplab.todomaven.ui.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
     public Context context ;
     public DefaultDataTask() throws Exception {
         myList = new ArrayList<>();
-        TodoTask task = new DefaultTodoTask("Example 1", false);
+        TodoTask task = new TodoTaskWrapper( new DefaultTodoTask("Example 1", false));
         myList.add(task);
 
     }
