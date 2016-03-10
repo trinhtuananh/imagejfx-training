@@ -54,6 +54,7 @@ public class TodoTaskWrapper implements TodoTask{
 
     @Override
     public void setState(boolean state) {
+        System.out.println("wrapper "+state);
         this.stateProperty.setValue(state);
     }
     public Property<String> nameProperty() {

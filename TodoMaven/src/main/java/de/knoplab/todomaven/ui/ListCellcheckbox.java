@@ -34,6 +34,7 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
             box.getStyleClass().add("list-cell");
 
             // 
+           
             itemProperty().addListener(this::onItemChanged);
         }
 
@@ -49,14 +50,13 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
                 setGraphic(null);
             } else {
 
-                setGraphic(box);
 
                 // we don't really listen to the text
                 label.textProperty().setValue(newValue.getName());
 
                 // it allows the checkbox to react to any change of wrapper and vis versa
                 checkbox.selectedProperty().bindBidirectional(newValue.stateProperty());
-                System.out.println(newValue.getName());
+                setGraphic(box);
 
             }
         }

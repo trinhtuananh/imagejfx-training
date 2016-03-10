@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import de.knoplab.todomaven.task.DataTaskService;
 import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
+import de.knoplab.todomaven.task.TodoTaskWrapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,9 +37,12 @@ public class DefaultLoadPlugin implements TodoPlugin{
         try {
             List <TodoTask> list;
             TypeFactory typeFactory = TypeFactory.defaultInstance();
-             list = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), typeFactory.constructCollectionType(ArrayList.class,DefaultTodoTask.class) );
+             list = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), typeFactory.constructCollectionType(ArrayList.class, DefaultTodoTask.class) );
              System.out.println(list.size());
-             tasks.setList(list);
+             
+             List<TodoTask> outputList = new ArrayList<>();
+             list.forEach(e -> outputList.add(new TodoTaskWrapper((e))));
+             tasks.setList(outputList);
         } catch (IOException ex) {
             Logger.getLogger(DefaultLoadPlugin.class.getName()).log(Level.SEVERE, null, ex);
         }

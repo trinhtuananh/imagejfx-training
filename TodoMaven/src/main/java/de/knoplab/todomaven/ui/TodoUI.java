@@ -153,13 +153,6 @@ public class TodoUI extends AnchorPane {
         
         return list.getItems().stream().filter(wrapper -> wrapper.getTask() == task).findFirst().orElse(null);
     }
-    /*@EventHandler
-    public void onDataCheckAllEvent(DataCheckAllEvent event) {
-        Platform.runLater(() -> {
-            list.getItems().setAll(event.getData());
-            list.setCellFactory((this.list.getCellFactory()));
-        });
 
-    }*/
 
 }
