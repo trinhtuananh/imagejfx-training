@@ -11,6 +11,7 @@ import de.knoplab.todomaven.task.DataTaskService;
 import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
 import de.knoplab.todomaven.task.TodoTaskWrapper;
+import de.knoplab.todomaven.ui.AlertWindow;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,26 +30,23 @@ import org.scijava.plugin.Plugin;
 public class DefaultLoadPlugin implements TodoPlugin{
     private ObjectMapper mapper;
     @Parameter
-    public DataTaskService tasks;
+    public DataTaskService dataTaskService;
     @Override
-    public void execute() throws IOException {
+    public void execute() {
         mapper = new ObjectMapper();
 
         try {
-            List <TodoTask> list;
+            List <TodoTask> listOutput;
             TypeFactory typeFactory = TypeFactory.defaultInstance();
-             list = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), typeFactory.constructCollectionType(ArrayList.class, DefaultTodoTask.class) );
-             System.out.println(list.size());
+            listOutput = mapper.readValue(new File("./src/main/resources/json/saveTasks.json"), typeFactory.constructCollectionType(ArrayList.class, DefaultTodoTask.class) );             
+            listOutput.forEach(e -> dataTaskService.addNewTask(e));
              
-             List<TodoTask> outputList = new ArrayList<>();
-             list.forEach(e -> outputList.add(new TodoTaskWrapper((e))));
-             tasks.setList(outputList);
         } catch (IOException ex) {
+            AlertWindow.display("Error data", "Any saved data");
             Logger.getLogger(DefaultLoadPlugin.class.getName()).log(Level.SEVERE, null, ex);
         }
   
         
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

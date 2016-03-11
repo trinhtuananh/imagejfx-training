@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
@@ -26,22 +28,21 @@ public class DefaultSavePlugin  implements TodoPlugin {
     private ObjectMapper mapper;
 
     @Parameter
-    public DataTaskService tasks;
+    public DataTaskService dataTaskService;
    
     
-    public void execute() throws IOException {
+    public void execute(){
         
-        System.out.println("t");
         mapper = new ObjectMapper();
-        //Save parameter task 
-        List <TodoTask> myListOfTasks = new ArrayList<>();
-        tasks.getList().forEach(e -> myListOfTasks.add(new DefaultTodoTask(e.getName(), e.getState())));
-//Object to JSON in file
-        mapper.writeValue(new File("./src/main/resources/json/saveTasks.json"), myListOfTasks);
+        List <TodoTask> listInput = new ArrayList<>();
+        dataTaskService.getList().forEach(e -> listInput.add(new DefaultTodoTask(e.getName(), e.getState())));
+        try {
+            mapper.writeValue(new File("./src/main/resources/json/saveTasks.json"), listInput);
+        } catch (IOException ex) {
+            Logger.getLogger(DefaultSavePlugin.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-//Object to JSON in String
-        String jsonInString = mapper.writeValueAsString(tasks.getList());
-        System.out.println(jsonInString);
+
     }
 
 }

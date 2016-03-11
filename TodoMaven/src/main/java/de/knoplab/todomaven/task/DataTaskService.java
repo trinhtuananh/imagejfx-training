@@ -16,12 +16,7 @@ import org.scijava.service.SciJavaService;
  *
  * @author tuananh
  */
-/*@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type")
-@JsonSubTypes({
-    @Type(value = DefaultDataTask.class, name = "DefaultDataTask") })*/
+
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonDeserialize(as = DefaultDataTask.class)
 

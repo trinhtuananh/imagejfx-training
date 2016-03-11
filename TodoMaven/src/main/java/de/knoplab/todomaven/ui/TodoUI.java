@@ -1,6 +1,7 @@
 package de.knoplab.todomaven.ui;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
 import de.knoplab.todomaven.task.TodoTaskWrapper;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
@@ -31,18 +32,13 @@ import org.scijava.plugin.PluginService;
 import de.knoplab.todomaven.plugins.TodoPlugin;
 import de.knoplab.todomaven.task.DefaultTodoTask;
 import de.knoplab.todomaven.task.TodoTask;
-import java.util.List;
-import javafx.collections.ObservableListBase;
+
 import javafx.event.ActionEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 
 public class TodoUI extends AnchorPane {
 
-    private Effect effectList;
-    private ObservableList<TodoTaskWrapper> obsList;
-    
-
-
+    private FlowPane flowPane;
     @Parameter
     public DataTaskService myData;
 
@@ -64,7 +60,7 @@ public class TodoUI extends AnchorPane {
     private Button confidentielButton;
     @FXML
     private Button saveButton;
-    private double x=0;
+
     @FXML
     private void selectAll() {
         myData.checkAll();
@@ -77,60 +73,38 @@ public class TodoUI extends AnchorPane {
         inputTask.setPromptText("Add an other Task");
     }
 
-    @FXML
-    private void confidentiel() {
-        if (list.getEffect() != null) {
-            list.setEffect(null);
-        } else {
-            list.setEffect(new GaussianBlur());
-        }
-    }
-
-    @FXML
-    private void deleteSelected() {
-        myData.deleteSelected();
-    }
-
     public TodoUI(Context context) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Scene.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
         context.inject(this);
+        flowPane = new FlowPane();
+        this.getChildren().add(flowPane);
         pluginService.getPluginsOfType(TodoPlugin.class).forEach(this::addPlugin);
         list.setCellFactory((ListView<TodoTaskWrapper> l) -> new ListCellcheckbox());
         Platform.runLater(() -> eventService.publish(new DataLoadEvent()));
     }
 
     public void addPlugin(PluginInfo<TodoPlugin> todoPluginInfo) {
-        x= x+100;
         Button button = new Button(todoPluginInfo.getLabel());
-        System.out.println("creation d'un plugin "+ button.getText());
-       
+        System.out.println("creation d'un plugin " + button.getText());
         button.setOnAction((ActionEvent e) -> {
-            applyPlugin(() -> {
-                try {
-                    TodoPlugin plugin2 =todoPluginInfo.createInstance();
-                    this.pluginService.context().inject(plugin2);
-                    plugin2.execute();
-
-                } catch (InstantiableException ex) {
-                    Logger.getLogger(TodoUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+            applyPlugin(todoPluginInfo);
         });
-        button.setLayoutX(x);
-        button.setLayoutY(10);
-        this.getChildren().add(button);
-        
-        
+ 
+        flowPane.getChildren().add(button);
 
     }
 
-    public void applyPlugin(TodoPlugin p)  {
+    public void applyPlugin(PluginInfo<TodoPlugin> todoPluginInfo) {
+
+        TodoPlugin plugin;
         try {
-            p.execute();
-        } catch (IOException ex) {
+            plugin = todoPluginInfo.createInstance();
+            this.pluginService.context().inject(plugin);
+            plugin.execute();
+        } catch (InstantiableException ex) {
             Logger.getLogger(TodoUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -138,24 +112,25 @@ public class TodoUI extends AnchorPane {
 
     @EventHandler
     public void onDataEventAdded(DataAddedEvent event) {
-            Platform.runLater(()->{
-                list.getItems().add(new TodoTaskWrapper(event.getData()));
-            });
+        Platform.runLater(() -> {
+            list.getItems().add(new TodoTaskWrapper(event.getData()));
+        });
     }
 
     @EventHandler
     public void onDataDeleteEvent(DataDeleteEvent event) {
         Platform.runLater(() -> {
-            System.out.println("size list"+list.getItems().size());
+            System.out.println("size list" + list.getItems().size());
             list.getItems().remove(getWrapperFromTask(event.getData()));
         });
     }
+
     private TodoTaskWrapper getWrapperFromTask(TodoTask task) {
-        
+
         return list.getItems().stream().filter(wrapper -> wrapper.getTask() == task).findFirst().orElse(null);
     }
 
- @EventHandler
+    @EventHandler
     public void onDataCheckAllEvent(DataCheckAllEvent event) {
         Platform.runLater(() -> {
             list.getItems().forEach(e -> e.setState(true));

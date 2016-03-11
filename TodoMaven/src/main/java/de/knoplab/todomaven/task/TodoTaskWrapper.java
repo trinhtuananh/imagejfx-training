@@ -6,21 +6,23 @@ package de.knoplab.todomaven.task;
  * and open the template in the editor.
  */
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.knoplab.todomaven.event.TodoTaskModifiedEvent;
 import javafx.beans.property.Property;
 import javafx.beans.property.adapter.JavaBeanObjectPropertyBuilder;
 import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
+import org.scijava.event.EventService;
 
 /**
  *
  * @author cyril
  */
 public class TodoTaskWrapper implements TodoTask {
-
     private final TodoTask task;
 
     private Property<String> nameProperty;
     private Property<Boolean> stateProperty;
-
+    private EventService eventService;
     public TodoTaskWrapper(TodoTask task) {
 
         this.task = task;
@@ -35,6 +37,11 @@ public class TodoTaskWrapper implements TodoTask {
             e.printStackTrace();
         }
 
+    }
+    
+    public TodoTaskWrapper(TodoTask task, boolean b, String s)
+    {
+        this.task=task;
     }
 
     @Override
@@ -55,6 +62,7 @@ public class TodoTaskWrapper implements TodoTask {
         // of the "state" property.
         stateProperty.setValue(isDone);
         System.out.println("from wrapper "+stateProperty);
+
     }
 
     @Override
@@ -62,7 +70,7 @@ public class TodoTaskWrapper implements TodoTask {
         // same as before
         nameProperty.setValue(name);
     }
-
+    @JsonProperty("task")
     public TodoTask getTask() {
         return task;
     }

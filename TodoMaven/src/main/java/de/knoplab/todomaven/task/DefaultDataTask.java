@@ -29,45 +29,45 @@ import org.scijava.service.AbstractService;
 @Plugin(type = DataTaskService.class, priority = 10)
 public final class DefaultDataTask extends AbstractService implements DataTaskService {
 
-    private List<TodoTask> myList;
+    private List<TodoTask> todoTaskList;
     @Parameter
     @JsonIgnore
-    public EventService eventService = new DefaultEventService();
+    public EventService eventService;
     @JsonIgnore
     public Context context ;
     public DefaultDataTask() throws Exception {
-        myList = new ArrayList<>();
+        todoTaskList = new ArrayList<>();
         TodoTask task = new TodoTaskWrapper( new DefaultTodoTask("Example 1", false));
-        myList.add(task);
+        todoTaskList.add(task);
 
     }
 
     @Override
     public void addNewTask(TodoTask t) {
         
-        myList.add(t);
+        todoTaskList.add(t);
         eventService.publish(new DataAddedEvent(t));
     }
 
     public List<TodoTask> getMyList() {
-        return myList;
+        return todoTaskList;
     }
 
     @Override
     public void checkAll() {
-        this.myList.stream().forEach(e -> e.setState(true));
-        eventService.publish(new DataCheckAllEvent(myList));
+        this.todoTaskList.stream().forEach(e -> e.setState(true));
+        eventService.publish(new DataCheckAllEvent(todoTaskList));
         System.out.println("State of all tasks");
-        this.myList.stream().forEach(e -> System.out.println(e.getName() + " " + e.getState()));
+        this.todoTaskList.stream().forEach(e -> System.out.println(e.getName() + " " + e.getState()));
     }
 
     @Override
     public void deleteSelected() {
-        List<TodoTask> listToDelete = this.myList;
-        this.myList = this.myList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
-        listToDelete.removeAll(this.myList);
+        List<TodoTask> listToDelete = this.todoTaskList;
+        this.todoTaskList = this.todoTaskList.stream().filter(e -> e.getState() == false).collect(Collectors.toList());
+        listToDelete.removeAll(this.todoTaskList);
         listToDelete.forEach(e -> {
-            myList.remove(e);
+            todoTaskList.remove(e);
             eventService.publish(new DataDeleteEvent(e));
             
                 });
@@ -75,17 +75,16 @@ public final class DefaultDataTask extends AbstractService implements DataTaskSe
 
     @EventHandler
     public void loadUI(DataLoadEvent event) {
-        this.myList.stream().forEach(e -> this.eventService.publish(new DataAddedEvent(e)));
+        this.todoTaskList.stream().forEach(e -> this.eventService.publish(new DataAddedEvent(e)));
     }
 
     @Override
     public List<TodoTask> getList() {
-        return this.myList;
+        return this.todoTaskList;
     }
 
     @Override
     public void setList(List<TodoTask> l) {
-        //this.myList = l;
         l.stream().forEach(e -> addNewTask(e));
     }
 

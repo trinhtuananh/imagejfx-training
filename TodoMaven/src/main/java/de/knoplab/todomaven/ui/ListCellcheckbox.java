@@ -5,15 +5,15 @@
  */
 package de.knoplab.todomaven.ui;
 
-import de.knoplab.todomaven.task.TodoTask;
+import de.knoplab.todomaven.event.TodoTaskModifiedEvent;
 import de.knoplab.todomaven.task.TodoTaskWrapper;
+import javafx.application.Platform;
 import javafx.beans.Observable;
-import javafx.event.EventType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import org.scijava.event.EventHandler;
 
 /**
  *
@@ -21,44 +21,40 @@ import javafx.scene.layout.HBox;
  */
 class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
 
-        // label displaying the text of the task
-        Label label = new Label();
+    Label label = new Label();
 
-        // checkbox displaying the status of the task (done/ not done)
-        CheckBox checkbox = new CheckBox();
+    CheckBox checkbox = new CheckBox();
 
-        // hbox containing everything
-        HBox box = new HBox(checkbox, label);
+    HBox box = new HBox(checkbox, label);
 
-        public ListCellcheckbox() {
-            box.getStyleClass().add("list-cell");
+    public ListCellcheckbox() {
+        box.getStyleClass().add("list-cell");
+        itemProperty().addListener(this::onItemChanged);
+    }
 
-            // 
-           
-            itemProperty().addListener(this::onItemChanged);
+    public void onItemChanged(Observable obs, TodoTaskWrapper oldValue, TodoTaskWrapper newValue) {
+        if (oldValue != null) {
+            // checkbox.selectedProperty().unbindBidirectional(oldValue.stateProperty());
         }
 
-        public void onItemChanged(Observable obs, TodoTaskWrapper oldValue, TodoTaskWrapper newValue) {
+        if (newValue == null) {
+            setGraphic(null);
+        } else {
 
-            // 
-            // a same cell can be used for different Wrapper, must make sure to desactivate previous bidirectional binding
-            if (oldValue != null) {
-                checkbox.selectedProperty().unbindBidirectional(oldValue.stateProperty());
-            }
+            label.textProperty().setValue(newValue.getName());
 
-            if (newValue == null) {
-                setGraphic(null);
-            } else {
+            checkbox.selectedProperty().unbind();
+            checkbox.selectedProperty().bindBidirectional(newValue.stateProperty());
+            setGraphic(box);
 
-
-                // we don't really listen to the text
-                label.textProperty().setValue(newValue.getName());
-
-                // it allows the checkbox to react to any change of wrapper and vis versa
-                checkbox.selectedProperty().bindBidirectional(newValue.stateProperty());
-                System.out.println(newValue.stateProperty());
-                setGraphic(box);
-
-            }
         }
     }
+
+    @EventHandler
+    public void onModifiedTaskEvent(TodoTaskModifiedEvent event) {
+        Platform.runLater(() -> {
+            checkbox.setSelected(event.getData().getState());
+        });
+
+    }
+}
