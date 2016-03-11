@@ -31,6 +31,7 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
         box.getStyleClass().add("list-cell");
         itemProperty().addListener(this::onItemChanged);
     }
+ 
 
     public void onItemChanged(Observable obs, TodoTaskWrapper oldValue, TodoTaskWrapper newValue) {
         if (oldValue != null) {
