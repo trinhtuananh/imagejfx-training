@@ -35,7 +35,7 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
 
     public void onItemChanged(Observable obs, TodoTaskWrapper oldValue, TodoTaskWrapper newValue) {
         if (oldValue != null) {
-            // checkbox.selectedProperty().unbindBidirectional(oldValue.stateProperty());
+            checkbox.selectedProperty().unbindBidirectional(oldValue.stateProperty());
         }
 
         if (newValue == null) {
@@ -44,7 +44,6 @@ class ListCellcheckbox extends ListCell<TodoTaskWrapper> {
 
             label.textProperty().setValue(newValue.getName());
 
-            checkbox.selectedProperty().unbind();
             checkbox.selectedProperty().bindBidirectional(newValue.stateProperty());
             setGraphic(box);
 

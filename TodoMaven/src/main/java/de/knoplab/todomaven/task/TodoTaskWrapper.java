@@ -61,7 +61,6 @@ public class TodoTaskWrapper implements TodoTask {
         // also automatically notify all the listeners
         // of the "state" property.
         stateProperty.setValue(isDone);
-        System.out.println("from wrapper "+stateProperty);
 
     }
 

@@ -1,7 +1,6 @@
 package de.knoplab.todomaven.ui;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.FlowList;
+
 import de.knoplab.todomaven.task.TodoTaskWrapper;
 import de.knoplab.todomaven.event.DataDeleteEvent;
 import de.knoplab.todomaven.event.DataCheckAllEvent;
@@ -12,14 +11,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
 import org.scijava.event.EventHandler;
 import org.scijava.event.EventService;
@@ -88,7 +84,7 @@ public class TodoUI extends AnchorPane {
 
     public void addPlugin(PluginInfo<TodoPlugin> todoPluginInfo) {
         Button button = new Button(todoPluginInfo.getLabel());
-        System.out.println("creation d'un plugin " + button.getText());
+        System.out.println("Create plugin" +todoPluginInfo.getLabel());
         button.setOnAction((ActionEvent e) -> {
             applyPlugin(todoPluginInfo);
         });
@@ -120,7 +116,6 @@ public class TodoUI extends AnchorPane {
     @EventHandler
     public void onDataDeleteEvent(DataDeleteEvent event) {
         Platform.runLater(() -> {
-            System.out.println("size list" + list.getItems().size());
             list.getItems().remove(getWrapperFromTask(event.getData()));
         });
     }

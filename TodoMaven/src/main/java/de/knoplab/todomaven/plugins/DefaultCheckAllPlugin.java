@@ -19,7 +19,6 @@ public class DefaultCheckAllPlugin implements TodoPlugin {
     DataTaskService tasks;
     @Override
     public void execute() {
-        //tasks.getList().stream().forEach(e -> e.setState(true));
         tasks.checkAll();
     }
 
