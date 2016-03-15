@@ -39,7 +39,6 @@ public class DefaultTodoTask implements TodoTask {
 
     @Override
     public void setState(boolean state) {
-        System.err.println(this.state+"Change state "+state );
         this.state = state;
     }
     
