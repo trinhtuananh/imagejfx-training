@@ -9,6 +9,10 @@ package de.knoplab.deletechannel;
  *
  * @author tuananh
  */
-public class CustomChannel {
+class RemoveChannelException extends Exception {
+
+    public RemoveChannelException() {
+        System.err.println("Channel not available");
+    }
     
 }
