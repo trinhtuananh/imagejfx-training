@@ -58,7 +58,18 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
         loader.setRoot(this);
         loader.setController(this);
         loader.load();
+        try {
         observableList = FXCollections.observableArrayList(listValues.subList(0, 5));
+            
+        } catch (Exception e) {
+        }
+        finally{
+            if (observableList == null)
+            {
+                observableList = FXCollections.observableArrayList(listValues);
+
+            }
+        }
         listView.setCellFactory((ListView<Item> l) -> new ListCellcheckbox());
         listView.setItems(observableList);
 
@@ -69,7 +80,7 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
         textField.onKeyPressedProperty();
         List<String> t = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            t.add(generateString(new Random(), "aegnfdjlkghsljkghflgjfsgsdgfgfgs", 10));
+            t.add(generateString(new Random(), "az", 2));
         }
         setPossibleValues(t);
         this.setPrefSize(listView.getPrefWidth(), listView.getPrefHeight() + 100);
@@ -108,7 +119,21 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
         if (bigger) {
             listValues.stream().filter(e -> e.getName().contains(s)).forEach(e -> listValuesTmp.add(e));
         } else {
+            try {
             listValues.subList(0, 5).stream().filter(e -> e.getName().contains(s)).forEach(e -> listValuesTmp.add(e));
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+                   finally{
+            if (observableList == null)
+            {
+                observableList = FXCollections.observableArrayList(listValues);
+
+            }
+        }
+            
+        
 
         }
         observableList = FXCollections.observableArrayList(listValuesTmp);
@@ -120,7 +145,7 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
         if (!bigger) {
             bigger = true;
             filterQuery();
-
+            moreButton.setVisible(false);
         }
     }
 
