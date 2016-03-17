@@ -6,13 +6,10 @@
 package de.knoplab.manageitems.ui;
 
 import de.knoplab.manageitems.Item;
-import javafx.application.Platform;
 import javafx.beans.Observable;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Box;
 
 /**
  *
@@ -20,29 +17,28 @@ import javafx.scene.shape.Box;
  */
 class ListCellcheckbox extends ListCell<Item> {
 
-
     CheckBox checkbox = new CheckBox();
 
     HBox box = new HBox(checkbox);
-    
+
     public ListCellcheckbox() {
         box.getStyleClass().add("list-cell");
+        itemProperty().addListener(this::onItemChanged);
     }
- 
 
-@Override
-        public void updateItem(Item item, boolean empty) {
-            if (item != null) {
-                checkbox.setText(item.getName()+" ("+item.getNumber()+")");
-                checkbox.setOnAction(e -> item.setState(!item.getState()));
-                checkbox.setSelected(item.getState());
+    public void onItemChanged(Observable obs, Item oldValue, Item newValue) {
 
-                setGraphic(box);
-            }
-            else
-            {
-                setGraphic(null);
-            }
+        if (newValue == null) {
+            setGraphic(null);
+        } else {
+            setGraphic(box);
+            checkbox.textProperty().setValue(newValue.getName() + " (" + newValue.getNumber() + ")");
+            checkbox.setOnAction(e -> {
+                newValue.setState(!newValue.getState());
+                WidgetUI.setPredicate();
+            });
+            checkbox.setSelected(newValue.getState());
         }
+    }
 
 }

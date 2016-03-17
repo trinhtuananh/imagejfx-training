@@ -13,6 +13,5 @@ import java.util.List;
  */
 public interface ListPossibleValues {
     public void setPossibleValues(List<String> list);
-    //public List<Item> getListItems();
     
 }

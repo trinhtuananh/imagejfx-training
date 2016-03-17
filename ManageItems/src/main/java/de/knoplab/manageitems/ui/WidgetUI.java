@@ -47,10 +47,10 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
     private Button moreButton;
     @FXML
     private ListView<Item> listView;
-    private List<Item> listValues;
+    private static List<Item> listValues;
     private ObservableList<Item> observableList;
     private boolean bigger = false;
-
+    private static Predicate<String> predicate;
     public WidgetUI() throws IOException {
         listValues = new ArrayList<>();
 
@@ -59,15 +59,12 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
         loader.setController(this);
         loader.load();
         try {
-        observableList = FXCollections.observableArrayList(listValues.subList(0, 5));
-            
-        } catch (Exception e) {
-        }
-        finally{
-            if (observableList == null)
-            {
-                observableList = FXCollections.observableArrayList(listValues);
+            observableList = FXCollections.observableArrayList(listValues.subList(0, 5));
 
+        } catch (Exception e) {
+        } finally {
+            if (observableList == null) {
+                observableList = FXCollections.observableArrayList(listValues);
             }
         }
         listView.setCellFactory((ListView<Item> l) -> new ListCellcheckbox());
@@ -78,9 +75,10 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         textField.onKeyPressedProperty();
+        //Generate Array
         List<String> t = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
-            t.add(generateString(new Random(), "az", 2));
+            t.add(generateString(new Random(), "az", 5));
         }
         setPossibleValues(t);
         this.setPrefSize(listView.getPrefWidth(), listView.getPrefHeight() + 100);
@@ -99,15 +97,12 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
     public void setPossibleValues(List<String> list) {
         Map<String, Integer> items;
         items = new HashMap<>();
-        list.stream().map((s) -> {
+        list.stream().forEach((s) -> {
             if (items.get(s) == null) {
                 items.put(s, 1);
             } else {
                 items.put(s, items.get(s) + 1);
             }
-            return s;
-        }).forEach((s) -> {
-            System.out.println(s + items.get(s));
         });
         items.forEach((s, i) -> listValues.add(new ItemWrapper(s, i)));
 
@@ -120,20 +115,15 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
             listValues.stream().filter(e -> e.getName().contains(s)).forEach(e -> listValuesTmp.add(e));
         } else {
             try {
-            listValues.subList(0, 5).stream().filter(e -> e.getName().contains(s)).forEach(e -> listValuesTmp.add(e));
-                
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-                   finally{
-            if (observableList == null)
-            {
-                observableList = FXCollections.observableArrayList(listValues);
+                listValues.subList(0, 5).stream().filter(e -> e.getName().contains(s)).forEach(e -> listValuesTmp.add(e));
 
+            } catch (Exception e) {
+            } finally {
+                if (observableList == null) {
+                    observableList = FXCollections.observableArrayList(listValues);
+
+                }
             }
-        }
-            
-        
 
         }
         observableList = FXCollections.observableArrayList(listValuesTmp);
@@ -147,11 +137,15 @@ public class WidgetUI extends BorderPane implements Initializable, ListPossibleV
             filterQuery();
             moreButton.setVisible(false);
         }
+        
     }
 
-    public Predicate<String> getPredicate() {
+    public static void setPredicate() {
         List<String> listBuffer = new ArrayList<>();
         listValues.stream().filter(e -> e.getState()).forEach(e -> listBuffer.add(e.getName()));
-        return p -> listBuffer.contains(p);
+        predicate = p -> listBuffer.contains(p);
+        System.out.println(listBuffer.toString());
     }
+    
+
 }
